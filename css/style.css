@@ -73,9 +73,10 @@ body{
     margin: 0 0 12px;
 }
 
-a:hover{
-    text-decoration: none;
+.post a{
     text-decoration: underline;
+}
+.post a:hover{
     color: gray;
 }
 
