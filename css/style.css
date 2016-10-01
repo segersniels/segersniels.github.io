@@ -73,6 +73,12 @@ body{
     margin: 0 0 12px;
 }
 
+a:hover{
+    text-decoration: none;
+    text-decoration: underline;
+    color: gray;
+}
+
 p a{
     text-decoration: none;
 }
