@@ -1,14 +1,14 @@
 <?php
 // get title of post
-echo "Title of new post:\n";
+echo "Title of new post: ";
 $stdin = fopen('php://stdin', 'r');
 $title = fgetc($stdin);
 // get content for post
-echo "Content of new post:\n";
+echo "Content of new post: ";
 $stdin = fopen('php://stdin', 'r');
 $content = fgetc($stdin);
 // transform command line input into new blog post in html file
-$data = file('index.html'); // reads an array of lines
+$data = file('index.html');
 function replace_a_line($data) {
    if (stristr($data, '<div class="post-preview">')) {
      return "<div class='post-preview'>
