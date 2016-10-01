@@ -16,7 +16,7 @@ $content = fgets($handle_content);
 
 $path_to_file = './index.html';
 $file_contents = file_get_contents($path_to_file);
-$file_contents = str_replace('<div class="post-preview">',"<div class='post-preview'><div class='post'><h2 class='post-title'>" . $title . "</h2><h3 class='post-subtitle'>". $content . "</h3></div><hr>",$file_contents);
+$file_contents = str_replace('<div class="post-preview">','<div class="post-preview"><div class="post"><h2 class="post-title">" . $title . "</h2><h3 class="post-subtitle">". $content . "</h3></div><hr>',$file_contents);
 file_put_contents($path_to_file,$file_contents);
 
 // check if new post is correct, if so push it to git, if not abort
