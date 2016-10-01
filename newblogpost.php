@@ -1,11 +1,13 @@
 <?php
 // get title of post
 echo "Title of new post: ";
+$handle_title = null;
 $handle_title = fopen("php://stdin","r");
 $title = fgets($handle_title);
 
 // get content for post
 echo "Content of new post: ";
+$handle_content = null;
 $handle_content = fopen("php://stdin","r");
 $content = fgets($handle_content);
 
