@@ -51,6 +51,18 @@ body{
     background-color: rgba(0,0,0,.03) ;
 }
 
+.page-style{
+    position: relative;
+    height: 100%;
+    padding-top: 30px;
+    padding-left: 50px;
+    padding-right: 50px;
+    width: 100%;
+    margin: 0 auto;
+    color: #3a3a3a;
+    padding-bottom: 50px;
+}
+
 .navigation a{
     font-family: 'Open Sans',sans-serif;
     font-style: normal;
