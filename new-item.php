@@ -24,7 +24,7 @@ if(trim($choice) == '1'){
 if(trim($choice) == '2'){
 	$assignment = true;
 }
-if(trim($choice) != '1' || trim($choice) == '2'){
+if(trim($choice) != '1' && trim($choice) != '2'){
 	echo "\n";
 	echo "ABORTING!\n";
 	exit;
@@ -41,7 +41,7 @@ if($blogpost == true){
 	echo "\nTitle of new post: ";
 	$handle_title = null;
 	$handle_title = fopen("php://stdin","r");
-	$title = fgets($handle_title);
+	$title = fgets($handle_title);	
 
 // get content for post
 	echo "Content of new post: ";
