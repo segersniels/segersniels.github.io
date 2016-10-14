@@ -60,7 +60,7 @@ if($blogpost == true){
 		// transform command line input into new blog post in html file
 		$path_to_file = './index.html';
 		$file_contents = file_get_contents($path_to_file);
-		$file_contents = str_replace('<div class="post-preview">','<div class="post-preview">' . "\n\t\t\t\t\t\t" . '<div class="post">'. "\n\t\t\t\t\t\t\t" .'<h2 class="post-title">'. "\n\t\t	\t\t\t\t\t\t" . $title . "\t\t\t\t\t\t\t" . '</h2>'. "\n\t\t\t\t\t\t\t" .'<h3 class="post-subtitle">'. "\n\t\t\t\t\t\t\t\t" . $content . "\t\t\t\t\t\t\t" . '</h3>'. "\n\t\t\t\t\t\t"	 .'</div>'. "\n\t\t\t\t\t\t" .'<hr>',$file_contents);
+		$file_contents = str_replace('<div class="post-preview">','<div class="post-preview">' . "\n\t\t\t\t\t\t" . '<div class="post">'. "\n\t\t\t\t\t\t\t" .'<h2 class="post-title">'. "\n\t\t\t\t\t\t\t\t" . $title . "\t\t\t\t\t\t\t" . '</h2>'. "\n\t\t\t\t\t\t\t" .'<h3 class="post-subtitle">'. "\n\t\t\t\t\t\t\t\t" . $content . "\t\t\t\t\t\t\t" . '</h3>'. "\n\t\t\t\t\t\t"	 .'</div>'. "\n\t\t\t\t\t\t" .'<hr>',$file_contents);
 		file_put_contents($path_to_file,$file_contents);
 		// push to git
 		exec("git add .");
