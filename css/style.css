@@ -51,6 +51,11 @@ body{
     background-color: rgba(0,0,0,.03) ;
 }
 
+*::selection {
+  background: gray;
+  color: #ffffff;
+}
+
 .page-style{
     position: relative;
     height: 100%;
