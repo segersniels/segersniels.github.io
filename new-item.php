@@ -6,6 +6,7 @@
 
 $blogpost = false;
 $assignment = false;
+$movie = false;
 
 echo "\n";
 echo".  .       .        ,-.                     
@@ -14,7 +15,7 @@ echo".  .       .        ,-.
 |  | | |-' | `-.   .   ) |-' | | |-' |   `-.
 '  ' ' `-' ' `-'    `-'  `-' `-| `-' '   `-'
 			     `-'            ";
-echo "\n\nWhat would you like to add? 1 to add a blogpost or 2 to add an assignment. Or input anything else to exit the script.\n\n";
+echo "\n\nWhat would you like to add? 1 to add a blogpost, 2 to add an assignment or 3 to add a movie. Or input anything else to exit the script.\n\n";
 $handle_choice = fopen ("php://stdin","r");
 $choice = fgets($handle_choice);
 
@@ -24,7 +25,10 @@ if(trim($choice) == '1'){
 if(trim($choice) == '2'){
 	$assignment = true;
 }
-if(trim($choice) != '1' && trim($choice) != '2'){
+if(trim($choice) == '3'){
+	$movie = true;
+}
+if(trim($choice) != '1' && trim($choice) != '2'  && trim($choice) != '3'){
 	echo "\n";
 	echo "ABORTING!\n";
 	exit;
@@ -118,4 +122,78 @@ if($assignment == true){
 		exit;
 	}
 }
+
+
+//////////////////////////////////////
+// ADD NEW MOVIE //
+//////////////////////////////////////
+
+if($movie == true){
+	// get title of movie
+	echo "\n";
+	echo "Title of new movie: ";
+	$handle_title = null;
+	$handle_title = fopen("php://stdin","r");
+	$title = rtrim(fgets($handle_title),"\r\n"); //Remove the newline/whitespace from the end of the input
+
+	// get year of movie
+	echo "Year: ";
+	$handle_year = null;
+	$handle_year = fopen("php://stdin","r");
+	$year = rtrim(fgets($handle_year),"\r\n"); //Remove the newline from the end of the input
+
+	// get image of movie
+	echo "Image: ";
+	$handle_image = null;
+	$handle_image = fopen("php://stdin","r");
+	$image = rtrim(fgets($handle_image),"\r\n"); //Remove the newline from the end of the input
+	
+	// get link for imdb
+	echo "IMDB page: ";
+	$handle_imdb = null;
+	$handle_imdb = fopen("php://stdin","r");
+	$imdb = rtrim(fgets($handle_imdb),"\r\n"); //Remove the newline from the end of the input
+
+	// get magnet link
+	echo "Magnet link: ";
+	$handle_magnet = null;
+	$handle_magnet = fopen("php://stdin","r");
+	$magnet = rtrim(fgets($handle_magnet),"\r\n"); //Remove the newline from the end of the input
+
+	// get link for subtitles
+	echo "URL link to subtitles: ";
+	$handle_sub = null;
+	$handle_sub = fopen("php://stdin","r");
+	$sub = rtrim(fgets($handle_sub),"\r\n"); //Remove the newline from the end of the input
+	
+	// check if new assignment is correct, if so push it to git, if not abort
+	echo "\nNew movie:\n\n";
+	echo "Title: " . $title . " (" . $year . ")" . "\n";
+	echo "Image: " . $image . "\n";
+	echo "IMDB: " . $imdb ."\n";
+	echo "Magnet: " . $magnet."\n";
+	echo "Subtitles: " . $sub."\n\n";
+	echo "Does this look correct?  Type 'yes' to continue: ";
+	$handle = fopen ("php://stdin","r");
+	$line = fgets($handle);
+	if(trim($line) == 'yes'){
+		// transform command line input into new assignment post in html file
+		$path_to_file = 'films.html';
+		$file_contents = file_get_contents($path_to_file);
+		$file_contents = str_replace('<!-- Movie script additions get added here -->','<!-- Movie script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h2>' . $title . " (" . $year . ")" . '</h2>' . "\n\t\t\t\t\t" . '<a href="'. $imdb . '"><img src="' . $image . '" style="height:300px;width:auto"/></a>' . "\n\t\t\t\t\t" . '<p><b>magnet: </b><blockquote>' . $magnet . "</blockquote>\n\t\t\t\t\t" . '<br><b>ondertitels: </b>' . $sub . "\n\t\t\t\t\t" . '</p>',$file_contents);
+
+		file_put_contents($path_to_file,$file_contents);
+		// push to git
+		exec("git add .");
+		exec("git commit -m 'new assignment'");
+		exec("git push");
+	}
+	else{
+		echo "\n";
+		echo "ABORTING!\n";
+		exit;
+	}
+}
+
+
 ?>
