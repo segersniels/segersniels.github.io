@@ -117,6 +117,10 @@ form{
     font-family: 'Open Sans';
 }
 
+.center{
+    text-align: center;
+}
+
 .post-title{
     margin: 0 0 8px;
     line-height: 1.3;
