@@ -180,7 +180,7 @@ if($movie == true){
 		// transform command line input into new assignment post in html file
 		$path_to_file = 'movies.html';
 		$file_contents = file_get_contents($path_to_file);
-		$file_contents = str_replace('<!-- Movie script additions get added here -->','<!-- Movie script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h2>' . $title . " (" . $year . ")" . '</h2>' . "\n\t\t\t\t\t" . '<a href="'. $imdb . '"><img src="' . $image . '" style="height:300px;width:auto"/></a>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . '<button class="btn" data-clipboard-text="' . $magnet . '">' . "\n\t\t\t\t\t\tCopy magnet link to clipboard" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . '<button class="btn" onClick="parent.open("' . $sub . '")">' . "\n\t\t\t\t\t\t" . 'Go to subtitle page or start downloading' . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t\t" . '</p>' . "\n\t\t\t\t\t<hr>",$file_contents);
+		$file_contents = str_replace('<!-- Movie script additions get added here -->','<!-- Movie script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h2>' . $title . " (" . $year . ")" . '</h2>' . "\n\t\t\t\t\t" . '<a href="'. $imdb . '"><img src="' . $image . '" style="height:300px;width:auto"/></a>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' data-clipboard-text='" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tCopy magnet link to clipboard" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . '<button class="btn" onClick="parent.open("' . $sub . '")">' . "\n\t\t\t\t\t\t" . 'Go to subtitle page or start downloading' . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t\t" . '</p>' . "\n\t\t\t\t\t<hr>",$file_contents);
 
 		file_put_contents($path_to_file,$file_contents);
 		// push to git
