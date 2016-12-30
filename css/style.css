@@ -9,8 +9,9 @@
   font-weight: 400;
   src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3SZ2oysoEQEeKwjgmXLRnTc.ttf) format('truetype');
 }
-h1,h2{
+h1,h2,h3{
     font-family: "Open Sans",Geneva,Verdana,sans-serif!important;
+    font-weight: lighter;
 }
 
 p{
@@ -164,6 +165,10 @@ img{
 
 form{
     width:100%;
+}
+
+.btn{
+    font-weight: normal;
 }
 
 .lang p a{
