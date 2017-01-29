@@ -204,7 +204,7 @@ if($movie == true){
 	$line = fgets($handle);
 	if(trim($line) == 'yes'){
 		// transform command line input into new assignment post in html file
-		$path_to_file = 'movies.html';
+		$path_to_file = 'download/movies.html';
 		$file_contents = file_get_contents($path_to_file);
 		$file_contents = str_replace('<!-- Movie script additions get added here -->','<!-- Movie script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h3>' . $title . " (" . $year . ")" . '</h3>' . "\n\t\t\t\t\t" . '<a href="'. $imdb . '" target="_noblank"><img src="' . $image . '" style="height:300px;width:auto"/></a>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tDownload movie" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $sub . "'" . ')">' . "\n\t\t\t\t\t\t" . 'Go to subtitle page' . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . '</p>' . "\n\t\t\t\t\t<hr>",$file_contents);
 
@@ -268,7 +268,7 @@ if($series == true){
 	$line = fgets($handle);
 	if(trim($line) == 'yes'){
 		// transform command line input into new assignment post in html file
-		$path_to_file = 'series.html';
+		$path_to_file = 'download/series.html';
 		$file_contents = file_get_contents($path_to_file);
 		$file_contents = str_replace('<!-- Series script additions get added here -->','<!-- Series script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h3>' . $title . " (" . $year . ")" . '</h3>' . "\n\t\t\t\t\t" . '<a href="'. $imdb . '" target="_noblank"><img src="' . $image . '" style="height:300px;width:auto"/></a>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tDownload series" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . "\n\t\t\t\t\t<hr>",$file_contents);
 
@@ -332,7 +332,7 @@ if($music == true){
 	$line = fgets($handle);
 	if(trim($line) == 'yes'){
 		// transform command line input into new assignment post in html file
-		$path_to_file = 'music.html';
+		$path_to_file = 'download/music.html';
 		$file_contents = file_get_contents($path_to_file);
 		$file_contents = str_replace('<!-- Music script additions get added here -->','<!-- Music script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h3>' . $title . " (" . $year . ")" . '</h3>' . "\n\t\t\t\t\t" . '<img src="' . $image . '" style="height:300px;width:auto"/>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tDownload music" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $youtube . "'" . ')">' . "\n\t\t\t\t\t\t" . 'Go to youtube example' . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . '</p>' . "\n\t\t\t\t\t<hr>",$file_contents);
 
