@@ -6,7 +6,7 @@
 
 $blogpost = false;
 $assignment = false;
-$movie = false;
+$download = false;
 
 echo "\n";
 echo".  .       .        ,-.                     
@@ -15,7 +15,7 @@ echo".  .       .        ,-.
 |  | | |-' | `-.   .   ) |-' | | |-' |   `-.
 '  ' ' `-' ' `-'    `-'  `-' `-| `-' '   `-'
 			     `-'            ";
-echo "\n\nWhat would you like to add? 1 to add a blogpost, 2 to add an assignment or 3 to add a movie. Or input anything else to exit the script.\n\n";
+echo "\n\nWhat would you like to add? 1 to add a blogpost, 2 to add an assignment or 3 to add an item to the download list. Or input anything else to exit the script.\n\n";
 $handle_choice = fopen ("php://stdin","r");
 $choice = fgets($handle_choice);
 
@@ -26,7 +26,7 @@ if(trim($choice) == '2'){
 	$assignment = true;
 }
 if(trim($choice) == '3'){
-	$movie = true;
+	$download = true;
 }
 if(trim($choice) != '1' && trim($choice) != '2'  && trim($choice) != '3'){
 	echo "\n";
@@ -123,7 +123,33 @@ if($assignment == true){
 	}
 }
 
+//////////////////////////////////////
+// DOWNLOAD //
+//////////////////////////////////////
+$movie = false;
+$series = false;
+$music = false;
 
+if($download == true){
+	echo "\n\nWhat would you like to add? 1 to add a movie, 2 to add a series or 3 to add music to the download list. Or input anything else to exit the script.\n\n";
+	$handle_choice = fopen ("php://stdin","r");
+	$choice = fgets($handle_choice);
+	
+	if(trim($choice) == '1'){
+		$movie = true;
+	}
+	if(trim($choice) == '2'){
+		$series = true;
+	}
+	if(trim($choice) == '3'){
+		$music = true;
+	}
+	if(trim($choice) != '1' && trim($choice) != '2'  && trim($choice) != '3'){
+		echo "\n";
+		echo "ABORTING!\n";
+		exit;
+	}
+}
 //////////////////////////////////////
 // ADD NEW MOVIE //
 //////////////////////////////////////
@@ -186,6 +212,140 @@ if($movie == true){
 		// push to git
 		exec("git add .");
 		exec("git commit -m 'new movie added'");
+		exec("git push");
+	}
+	else{
+		echo "\n";
+		echo "ABORTING!\n";
+		exit;
+	}
+}
+
+//////////////////////////////////////
+// ADD NEW SERIES //
+//////////////////////////////////////
+
+if($series == true){
+	// get title of series
+	echo "\n";
+	echo "Title of new series: ";
+	$handle_title = null;
+	$handle_title = fopen("php://stdin","r");
+	$title = rtrim(fgets($handle_title),"\r\n"); //Remove the newline/whitespace from the end of the input
+
+	// get year of series
+	echo "Year: ";
+	$handle_year = null;
+	$handle_year = fopen("php://stdin","r");
+	$year = rtrim(fgets($handle_year),"\r\n"); //Remove the newline from the end of the input
+
+	// get image of series
+	echo "Image: ";
+	$handle_image = null;
+	$handle_image = fopen("php://stdin","r");
+	$image = rtrim(fgets($handle_image),"\r\n"); //Remove the newline from the end of the input
+	
+	// get link for imdb
+	echo "IMDB page: ";
+	$handle_imdb = null;
+	$handle_imdb = fopen("php://stdin","r");
+	$imdb = rtrim(fgets($handle_imdb),"\r\n"); //Remove the newline from the end of the input
+
+	// get magnet link
+	echo "Magnet link: ";
+	$handle_magnet = null;
+	$handle_magnet = fopen("php://stdin","r");
+	$magnet = rtrim(fgets($handle_magnet),"\r\n"); //Remove the newline from the end of the input
+	
+	// check if new assignment is correct, if so push it to git, if not abort
+	echo "\nNew series:\n\n";
+	echo "Title: " . $title . " (" . $year . ")" . "\n";
+	echo "Image: " . $image . "\n";
+	echo "IMDB: " . $imdb ."\n";
+	echo "Magnet: " . $magnet."\n";
+	echo "Does this look correct?  Type 'yes' to continue: ";
+	$handle = fopen ("php://stdin","r");
+	$line = fgets($handle);
+	if(trim($line) == 'yes'){
+		// transform command line input into new assignment post in html file
+		$path_to_file = 'series.html';
+		$file_contents = file_get_contents($path_to_file);
+		$file_contents = str_replace('<!-- Series script additions get added here -->','<!-- Series script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h3>' . $title . " (" . $year . ")" . '</h3>' . "\n\t\t\t\t\t" . '<a href="'. $imdb . '" target="_noblank"><img src="' . $image . '" style="height:300px;width:auto"/></a>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tDownload series" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . "\n\t\t\t\t\t<hr>",$file_contents);
+
+		file_put_contents($path_to_file,$file_contents);
+		// push to git
+		exec("git add .");
+		exec("git commit -m 'new series added'");
+		exec("git push");
+	}
+	else{
+		echo "\n";
+		echo "ABORTING!\n";
+		exit;
+	}
+}
+
+//////////////////////////////////////
+// ADD NEW MUSIC //
+//////////////////////////////////////
+
+if($music == true){
+	// get title of music
+	echo "\n";
+	echo "Artist: ";
+	$handle_title = null;
+	$handle_title = fopen("php://stdin","r");
+	$title = rtrim(fgets($handle_title),"\r\n"); //Remove the newline/whitespace from the end of the input
+
+	// get year of music
+	echo "Year: ";
+	$handle_year = null;
+	$handle_year = fopen("php://stdin","r");
+	$year = rtrim(fgets($handle_year),"\r\n"); //Remove the newline from the end of the input
+
+	// get image of music
+	echo "Image: ";
+	$handle_image = null;
+	$handle_image = fopen("php://stdin","r");
+	$image = rtrim(fgets($handle_image),"\r\n"); //Remove the newline from the end of the input
+	
+	// album
+	echo "Album: ";
+	$handle_album = null;
+	$handle_album = fopen("php://stdin","r");
+	$album = rtrim(fgets($handle_album),"\r\n"); //Remove the newline from the end of the input
+
+	// get magnet link
+	echo "Magnet link: ";
+	$handle_magnet = null;
+	$handle_magnet = fopen("php://stdin","r");
+	$magnet = rtrim(fgets($handle_magnet),"\r\n"); //Remove the newline from the end of the input
+
+	// get link for example
+	echo "Youtube example: ";
+	$handle_youtube = null;
+	$handle_youtube = fopen("php://stdin","r");
+	$youtube = rtrim(fgets($handle_youtube),"\r\n"); //Remove the newline from the end of the input
+	
+	// check if new assignment is correct, if so push it to git, if not abort
+	echo "\nNew music:\n\n";
+	echo "Artist: " . $title . " (" . $year . ")" . "\n";
+	echo "Album image: " . $image . "\n";
+	echo "Magnet: " . $magnet."\natcasesort(array)";
+	echo "Youtube: " . $youtube."\n\n";
+	echo "Does this look correct?  Type 'yes' to continue: ";
+	$handle = fopen ("php://stdin","r");
+	$line = fgets($handle);
+	if(trim($line) == 'yes'){
+		// transform command line input into new assignment post in html file
+		$path_to_file = 'movies.html';
+		$file_contents = file_get_contents($path_to_file);
+		$file_contents = str_replace('<!-- Music script additions get added here -->','<!-- Music script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h3>' . $title . " (" . $year . ")" . '</h3>' . "\n\t\t\t\t\t" . '<img src="' . $image . '" style="height:300px;width:auto"/>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tDownload music" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $youtube . "'" . ')">' . "\n\t\t\t\t\t\t" . 'Go to youtube example' . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . '</p>' . "\n\t\t\t\t\t<hr>",$file_contents);
+
+		file_put_contents($path_to_file,$file_contents);
+		// push to git
+		exec("git add .");
+		exec("git commit -m 'new music added'");
 		exec("git push");
 	}
 	else{
