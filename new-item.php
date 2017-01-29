@@ -308,12 +308,6 @@ if($music == true){
 	$handle_image = null;
 	$handle_image = fopen("php://stdin","r");
 	$image = rtrim(fgets($handle_image),"\r\n"); //Remove the newline from the end of the input
-	
-	// album
-	echo "Album: ";
-	$handle_album = null;
-	$handle_album = fopen("php://stdin","r");
-	$album = rtrim(fgets($handle_album),"\r\n"); //Remove the newline from the end of the input
 
 	// get magnet link
 	echo "Magnet link: ";
@@ -338,7 +332,7 @@ if($music == true){
 	$line = fgets($handle);
 	if(trim($line) == 'yes'){
 		// transform command line input into new assignment post in html file
-		$path_to_file = 'movies.html';
+		$path_to_file = 'music.html';
 		$file_contents = file_get_contents($path_to_file);
 		$file_contents = str_replace('<!-- Music script additions get added here -->','<!-- Music script additions get added here -->' . "\n\n\t\t\t\t\t" . '<h3>' . $title . " (" . $year . ")" . '</h3>' . "\n\t\t\t\t\t" . '<img src="' . $image . '" style="height:300px;width:auto"/>' . "\n\t\t\t\t\t" . '<br><br>' . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $magnet . "'" . ')">' . "\n\t\t\t\t\t\tDownload music" . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . "<button class='btn' onClick=" . '"' . 'parent.open(' . "'" . $youtube . "'" . ')">' . "\n\t\t\t\t\t\t" . 'Go to youtube example' . "\n\t\t\t\t\t</button>" . "\n\t\t\t\t\t" . '</p>' . "\n\t\t\t\t\t<hr>",$file_contents);
 
