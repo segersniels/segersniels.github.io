@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     // process the form
     $('form').submit(function(event) {
         // get the form data
@@ -15,7 +14,7 @@ $(document).ready(function() {
             type: 'POST',
             crossDomain: true,
             contentType: 'application/json',
-            data: JSON.stringify(data),
+            data: JSON.stringify(formData),
             dataType: 'json',
             success: function(data) {
                 window.location.href = "http://nielssegers.com/thanks";
