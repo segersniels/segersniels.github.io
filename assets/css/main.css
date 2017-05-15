@@ -4,6 +4,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    color: rgba(0,0,0,.8);
 }
 body {
     width: 100%;
@@ -17,8 +18,12 @@ html {
 }
 
 *::selection {
-  background: gray;
-  color: #ffffff;
+    background: gray;
+    color: #ffffff;
+}
+
+a{
+    text-decoration: underline;
 }
 
 .page-style{

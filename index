@@ -23,10 +23,10 @@
         <div class="container">
             <div class="header-text">
                 <div class="navigation">
-                    <a href="index.html">Home</a>
-                    <a href="html/work.html">Work</a>
+                    <a href="index">Home</a>
+                    <a href="work">Work</a>
                     <a href="https://linkedin.com/in/nielssegers">About</a>
-                    <a href="html/contact.html">Contact</a>   
+                    <a href="contact">Contact</a>   
                 </div>  
                 <h1>niels segers</h1>
                 <hr class="hr-small">

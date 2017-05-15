@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,10 +32,10 @@
         <div class="container">
             <div class="header-text">
                 <div class="navigation">
-                    <a href="../index.html">Home</a>
-                    <a href="work.html">Work</a>
+                    <a href="index">Home</a>
+                    <a href="work">Work</a>
                     <a href="https://linkedin.com/in/nielssegers">About</a>
-                    <a href="contact.html">Contact</a>   
+                    <a href="contact">Contact</a>   
                 </div>  
                 <h1>contact me</h1>
                 <hr class="hr-small">
@@ -70,7 +71,7 @@
                         <textarea name="message" id="message" class="form-control" rows="5" required placeholder="Enter Message" required></textarea>
                     </div>
                     <input type="submit" value="Submit" class="btn btn-default">
-                    <input type="hidden" name="_next" value="//nielssegers.com/html/thanks.html">
+                    <input type="hidden" name="_next" value="//nielssegers.com/thanks">
                 </form>              
             </div>                          
         </div>
