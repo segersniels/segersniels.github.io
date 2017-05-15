@@ -2,7 +2,6 @@ $(document).ready(function() {
 
     // process the form
     $('form').submit(function(event) {
-
         // get the form data
         // there are many ways to get this data using jQuery (you can use the class or id also)
         var formData = {
@@ -11,17 +10,18 @@ $(document).ready(function() {
             'text'              : $('input[name=message]').val()
         };
 
-
-
-        // process the form
         $.ajax({
-            type        : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-            url         : 'https://veuwyhpsk9.execute-api.eu-west-1.amazonaws.com/dev/mail/post', // the url where we want to POST
-            data        : formData, // our data object
-            dataType    : 'json', // what type of data do we expect back from the server
-            encode      : true,
-            succes: function(json) {
+            url: 'https://veuwyhpsk9.execute-api.eu-west-1.amazonaws.com/dev/mail/post',
+            type: 'POST',
+            crossDomain: true,
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function(data) {
                 window.location.href = "http://nielssegers.com/thanks";
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                //error handling stuff
             }
         })
             // using the done promise callback
