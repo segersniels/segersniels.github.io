@@ -5,6 +5,7 @@ header{
     background-attachment: scroll;
     height: 500px;
     width: 100%;
+    background-repeat: no-repeat;
 }
 
 .header{

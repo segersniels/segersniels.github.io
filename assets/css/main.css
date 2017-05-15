@@ -91,22 +91,6 @@ p a:hover{
     margin: 0 0 12px;
 }
 
-form{
-    width:200%;
-}
-
-.cv{
-    width:100%;
-}
-
-img{
-    width: 100%;
-}
-
-form{
-    width:100%;
-}
-
 .btn{
     font-weight: normal;
 }
@@ -115,16 +99,4 @@ form{
     color: rgba(255,255,255,.2);
     text-decoration: none;
     padding-left: 3px;
-}
-
-@media(min-width:767px) {
-    .navbar {
-        padding: 20px 0;
-        -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
-        transition: background .5s ease-in-out,padding .5s ease-in-out;
-    }
-    .top-nav-collapse {
-        padding: 0;
-    }
 }
