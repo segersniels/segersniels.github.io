@@ -6,7 +6,7 @@ $(document).ready(function() {
         var formData = {
             'email'             : $('input[name=email]').val(),
             'subject'           : $('input[name=subject]').val(),
-            'text'              : $('input[name=message]').val()
+            'text'              : $('textarea[name=message]').val()
         };
 
         $.ajax({
