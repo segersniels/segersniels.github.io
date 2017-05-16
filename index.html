@@ -45,7 +45,7 @@
                     </h2>
                     <h3 class="post-subtitle">
                         This website is staticly being hosted on GitHub using the GitHub pages. Which means there is not a backend present to handle mails and stuff. That's why I started experimenting with writing an AWS Lambda function (Node.js) to handle my contact form. User Experience is something important, so having to send a mail through an external mail client is not the way to go. I previously looked into using open source projects like Formspree.io to handle the mails, but it just didn't do exactly what I wanted. 
-
+                        <br><br>
                         The Lambda function runs the <a href="https://nodemailer.com/about/" target="_blank">Nodemailer</a> package together with <a href="https://mailgun.com" target="_blank">Mailgun</a> to handle my contact form. So I have some jQuery code in place in the frontend to send an AJAX POST request to AWS API Gateway who then triggers my Lambda function. Mailgun offers 10.000 free emails per month and AWS Lambda only gets billed when you exceed 1.000.000 requests, so that means I have a somewhat free alternative to having a backend server or container running somewhere. Removing the cost of having my own VPS or hosting needed to handle my stuff.
                     </h3> 
                  </div>
