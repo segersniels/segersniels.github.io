@@ -1,0 +1,9 @@
+# main
+node
+node_modules
+package.json
+
+# misc
+.DS_Store
+.env
+npm-debug.log

@@ -1,0 +1,22 @@
+service: cluster-changes-slack # update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: dev
+  region: # change to your region (eg. us-west-2)
+  timeout: 10
+
+# you can define service wide environment variables here
+  environment:
+    AWS_DYNAMO: # change to your dynamodb endpoint
+    SLACK_WEBHOOK_URL: # change to your slack webhook url
+    TABLE: # change to your table name where the lambda funtion can store it's data
+    AUTHOR: # change to your or company name
+    AUTHOR_URL: # eg. portfolio, github repo or company url
+    AUTHOR_IMG: # provide an image url
+    REGION: # change to your aws region
+
+functions:
+  clusterChanges:
+    handler: handler.run

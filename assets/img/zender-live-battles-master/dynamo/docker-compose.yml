@@ -1,0 +1,10 @@
+dynamo:
+  image: fitz/dynamodb-local
+  command: -inMemory -sharedDb
+  ports:
+    - "18000:8000"
+
+# redis:
+#   image: redis
+#   ports:
+#     - "6379:6379"

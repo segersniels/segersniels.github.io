@@ -1,0 +1,89 @@
+/**
+ *  Media
+ *  -----------------
+ */
+
+.media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+
+	@include breakpoint(tablet) {
+		z-index: 1;
+	}
+}
+
+.media img {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	max-width: 100%;
+	max-height: 100%;
+	z-index: -10;
+
+	-ms-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+	background-size: cover;
+}
+
+.media #jw_video {
+	z-index: -10;
+}
+
+.media .jw_video {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	min-width: 100%;
+	width: auto;
+	height: auto;
+
+	-ms-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+	background-size: cover;
+}
+
+.media p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.jwplayer {
+	@include breakpoint(phablet) {
+		height: 300px !important;
+		margin-top: 60px !important;
+		z-index: 2;
+		overflow: visible;
+
+		&:after {
+			display: block;
+			position: absolute;
+			content: '';
+			height: 120px;
+			width: 100vw;
+			background: linear-gradient(rgba($c_black, .8), rgba($c_gray_darker, 0));
+			bottom: -120px;
+		}
+	}
+
+	@media all and (min-height: 900px) {
+		height: 450px !important;
+	}
+
+	@include breakpoint(mobile) {
+		height: 190px !important;
+	}
+
+	@media (max-width: 800px) and (orientation: landscape) {
+		height: calc(100vh - 60px) !important;
+	}
+}

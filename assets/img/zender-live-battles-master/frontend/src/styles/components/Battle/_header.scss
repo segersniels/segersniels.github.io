@@ -1,0 +1,35 @@
+.battleHeader {
+  width: 100vw;
+  text-align: center;
+
+  .battleHeader__desktop {
+    height: 120px;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 30px 20px 0 20px;
+    background: linear-gradient(-180deg, rgba(0,0,0,0.40) 0%, rgba(0,0,0,0.00) 100%);
+    z-index: 2;
+
+    @include breakpoint(phablet) {
+      display: none;
+    }
+  }
+
+  .battleHeader__mobile {
+    width: 100vw;
+    display: none;
+    background: $c_gray_dark;
+    height: 60px;
+    position: relative;
+    top: 0;
+    padding: 0 15px;
+    position: absolute;
+    z-index: 2;
+
+    @include breakpoint(phablet) {
+      display: block;
+    }
+  }
+}

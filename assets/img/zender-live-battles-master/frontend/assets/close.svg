@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="24px" viewBox="0 0 25 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>close</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M8.83883476,6.71751442 L3.1783412,1.05702085 C2.59538502,0.474064673 1.64644661,0.474873734 1.06066017,1.06066017 C0.470789739,1.6505306 0.473244355,2.5945647 1.05702085,3.1783412 L6.71751442,8.83883476 L1.05702085,14.4993283 C0.473244355,15.0831048 0.470789739,16.0271389 1.06066017,16.6170094 C1.64644661,17.2027958 2.59538502,17.2036049 3.1783412,16.6206487 L8.83883476,10.9601551 L14.4993283,16.6206487 C15.0822845,17.2036049 16.0312229,17.2027958 16.6170094,16.6170094 C17.2068798,16.0271389 17.2044252,15.0831048 16.6206487,14.4993283 L10.9601551,8.83883476 L16.6206487,3.1783412 C17.2044252,2.5945647 17.2068798,1.6505306 16.6170094,1.06066017 C16.0312229,0.474873734 15.0822845,0.474064673 14.4993283,1.05702085 L8.83883476,6.71751442 Z" id="path-1"></path>
+        <filter x="-45.6%" y="-27.4%" width="191.2%" height="191.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Mobile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="iPhone-7-Copy" transform="translate(-334.000000, -20.000000)">
+            <g id="close" transform="translate(338.000000, 20.000000)">
+                <g id="Combined-Shape">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#B5B5B5" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

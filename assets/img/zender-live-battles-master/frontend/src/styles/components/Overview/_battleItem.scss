@@ -1,0 +1,128 @@
+/**
+ *	BATTLEITEM
+ *	-----------------
+ */
+
+.battleItem {
+	display: block;
+	position: relative;
+	background: $c_gray_lighter;
+	border-radius: $d_border-radius_default;
+	border-bottom: $c_green_normal 5px solid;
+	overflow: hidden;
+	margin-bottom: 20px;
+
+	.battleItem__header {
+		padding: 20px 0 30px;
+		text-align: center;
+
+		.battleItem__league {
+			font-weight: bold;
+			color: #D8D8D8;
+			font-size: $t_font-size_smallest;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+		}
+
+		.battleItem__status {
+			position: absolute;
+			top: -6px;
+			right: -26px;
+			width: 80px;
+			height: 40px;
+			background: $c_green_normal;
+			transform: rotate(45deg);
+
+			.battleItem__statusContent {
+				position: absolute;
+				color: $c_white;
+				bottom: 5px;
+				width: 100%;
+				text-transform: uppercase;
+				font-size: $t_font-size_smallest;
+				font-weight: $t_font-weight_bold;
+				letter-spacing: 1px;
+			}
+		}
+	}
+
+	.battleItem__matchInfo {
+		padding: 0 20px;
+		@include clearfix();
+
+		.battleItem__team {
+			width: 35%;
+			float: left;
+
+			&.battleItem__team--team1 {
+
+			}
+
+			&.battleItem__team--team2 {
+				.battleItem__clubLogo,
+				.battleItem__clubName {
+					float: right;
+				}
+
+				.battleItem__clubName {
+					padding-right: 10px;
+				}
+			}
+
+			.battleItem__clubLogo {
+				width: 50px;
+				height: 50px;
+				border-radius: $d_border-radius_circle;
+				overflow: hidden;
+				float: left;
+
+				img {
+					width: 100%;
+					height: auto;
+					min-height: 100%;
+				}
+			}
+
+			.battleItem__clubName {
+				float: left;
+				line-height: 50px;
+				padding-left: 10px;
+
+				@include breakpoint(mobile) {
+					display: none;
+				}
+			}
+		}
+
+		.battleItem__score {
+			width: 30%;
+			float: left;
+			text-align: center;
+			line-height: 50px;
+			font-size: $t_font-size_xlarge;
+			font-weight: $t_font-weight_bold;
+
+			.battleItem__scoreSep {
+				padding: 0 5px;
+			}
+		}
+	}
+
+	.battleItem__footer {
+		padding: 30px 0 20px;
+		text-align: center;
+
+		.button {
+			margin: 0 5px;
+		}
+
+		.button__delete {
+			display: none;
+			animation: strobe 50ms infinite;
+		}
+	}
+}
+
+@keyframes strobe {
+  50% { opacity: 0; }
+}

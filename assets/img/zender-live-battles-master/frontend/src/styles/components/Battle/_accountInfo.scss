@@ -1,0 +1,74 @@
+.battleHeader__desktop {
+  .accountInfo {
+    display: block;
+    float: right;
+    padding-top: 5px;
+    position: relative;
+    z-index: 9999;
+    cursor: pointer;
+
+    .accountInfo__name {
+      text-align: right;
+      float: left;
+      line-height: 30px;
+      padding-right: 30px;
+      color: $c_gray_lighter;
+      position: relative;
+
+      &:after {
+        position: absolute;
+        content: '';
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-top: 2px solid $c_gray_lighter;
+        border-left: 2px solid $c_gray_lighter;
+        transform: rotate(225deg);
+        right: 13px;
+        top: 9px;
+      }
+    }
+
+    .accountInfo__avatar {
+      display: block;
+      width: 30px;
+      height: 30px;
+      background: $c_white;
+      border-radius: $d_border-radius_circle;
+      float: right;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba($c_black, .2);
+
+      img {
+        width: 100%;
+        height: auto;
+        min-height: 100%;
+      }
+    }
+  }
+}
+
+.battleHeader__mobile {
+  .accountInfo {
+    position: relative;
+    top: 15px;
+    float: left;
+
+    @media (max-width: 800px) and (orientation: landscape) {
+      display: none;
+    }
+
+    .accountInfo__avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      img {
+        width: 100%;
+        height: auto;
+        min-height: auto;
+      }
+    }
+  }
+}

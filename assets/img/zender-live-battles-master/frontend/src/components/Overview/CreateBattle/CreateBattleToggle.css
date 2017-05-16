@@ -1,0 +1,11 @@
+.CreateBattleToggle .button_row {
+	text-align: right;
+}
+
+.CreateBattleToggle .openForm {
+	display: block;
+}
+
+.CreateBattleToggle .closedForm {
+	display: none;
+}

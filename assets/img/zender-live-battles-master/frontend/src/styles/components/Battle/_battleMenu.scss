@@ -1,0 +1,24 @@
+.battleMenu__open {
+  position: absolute;
+  float: right;
+  width: 22px;
+  height: 19px;
+  top: 23px;
+  right: 15px;
+
+  .battleMenu__icon {
+    background: url('../../assets/hamburger.svg') no-repeat;
+    background-size: cover;
+    width: 22px;
+    height: 19px;
+    text-indent: -9999px;
+  }
+
+  @media (max-width: 800px) and (orientation: landscape) {
+    display: none;
+  }
+}
+
+.battleMenu {
+
+}

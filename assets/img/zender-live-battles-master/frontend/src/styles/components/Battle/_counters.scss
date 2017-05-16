@@ -1,0 +1,104 @@
+/**
+ *  counters
+ *  -----------------
+ */
+
+.counters {
+  position: absolute;
+  left: 50%;
+  top: 100px;
+  transform: translate(-50%, 0);
+  width: 140px;
+  height: 32px;
+  overflow: hidden;
+  background: rgba($c_gray_dark, 0.15);
+  border-radius: $d_border-radius_default;
+  box-shadow: 0 3px 4px 0 rgba($c_black, .1), inset 0 -1px 0 0 rgba($c_black, .05);
+  z-index: 2;
+
+  @include breakpoint(phablet) {
+    top: 60px;
+    background: rgba($c_gray_dark, 0.4);
+    border-radius: 0 0 $d_border-radius_default $d_border-radius_default;
+    height: 26px;
+  }
+
+  .counters__team,
+  .counters__emoji {
+    display: inline-block;
+    float: left;
+    height: 32px;
+
+    @include breakpoint(tablet) {
+      height: 26px;
+    }
+  }
+
+  .counters__team {
+    width: 50px;
+
+    .counters__teamColor,
+    .counters__count {
+      float: left;
+      display: inline-block;
+      height: 32px;
+
+      @include breakpoint(phablet) {
+        height: 26px;
+      }
+    }
+
+    &.counters__team--team2 {
+      .counters__count {
+        text-align: left;
+      }
+    }
+
+    .counters__teamColor {
+      width: 5px;
+
+      @include breakpoint(phablet) {
+        display: none;
+      }
+    }
+
+    .counters__count {
+      width: 45px;
+      text-align: right;
+      line-height: 32px;
+      color: $c_white;
+      font-weight: $t_font-weight_bold;
+      font-size: $t_font-size_smaller;
+      text-shadow: 0 2px 3px rgba(0,0,0,0.20);
+
+      @include breakpoint(phablet) {
+        line-height: 26px;
+        font-size: $t_font-size_smallest;
+      }
+    }
+  }
+
+  .counters__emoji {
+    width: 40px;
+    text-align: center;
+
+    &:before {
+      content: ' ';
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+    }
+
+    .counters__image {
+      vertical-align: middle;
+      width: 20px;
+      height: auto;
+      box-shadow: 0 2px 3px 0 rgba($c_black, .1);
+      border-radius: 50%;
+
+      @include breakpoint(phablet) {
+        width: 16px;
+      }
+    }
+  }
+}

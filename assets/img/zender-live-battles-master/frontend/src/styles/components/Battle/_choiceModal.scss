@@ -1,0 +1,107 @@
+/**
+ *  CHOICEMODAL
+ *  -----------------
+ */
+
+.ChoiceModal {
+	color: $c_gray_lighter;
+	background-color: $c_gray_dark;
+	text-align: center;
+	border-radius: $d_border-radius_default;
+
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	width: 500px;
+	padding: 30px 15px 20px;
+
+	outline: none;
+
+	box-shadow: 0 3px 10px 0 rgba($c_black, .3),
+							inset 0 -1px 0 0 rgba($c_black, .2),
+							inset 0 1px 0 0 rgba($c_white, .3);
+
+	@include breakpoint(mobile) {
+		top: 60px;
+		left: 0;
+		transform: none;
+		width: 100%;
+		max-width: 500px;
+		border-radius: 0;
+	}
+
+	.choiceModal__title {
+		margin-bottom: 15px;
+		font-size: $t_font-size_medium;
+		font-weight: $t_font-weight_bold;
+	}
+
+	.choiceModal__description {
+		margin-bottom: 30px;
+	}
+
+	.choiceModal__options {
+
+		.choiceModal__team {
+			display: inline-block;
+			background-color: $c_gray_lighter;
+			width: 180px;
+			height: 140px;
+			cursor: pointer;
+			border-radius: $d_border-radius_default;
+			overflow: hidden;
+
+			@include breakpoint(phablet) {
+				width: 45%;
+				height: 120px;
+			}
+
+			&.choiceModal__team--left {
+				margin-right: 5px;
+				border-left: 5px solid $c_white;
+			}
+
+			&.choiceModal__team--right {
+				margin-left: 5px;
+				border-right: 5px solid $c_white;
+			}
+
+			.choiceModal__teamImage {
+				width: 100%;
+				height: 100px;
+				text-align: center;
+				padding: 15px;
+
+				@include breakpoint(mobile) {
+					height: 80px;
+				}
+
+				.choiceModal__avatar {
+					height: 100%;
+					width: auto;
+				}
+			}
+
+			.choiceModal__teamName {
+				font-size: $t_font-size_smallest;
+				color: $c_gray_dark;
+				background-color: #EBEBEB;
+				height: 40px;
+				line-height: 40px;
+				font-weight: $t_font-weight_bold;
+			}
+		}
+	}
+}
+
+.ChoiceModal__overlay {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	background-color: rgba($c_black, 0.4);
+	z-index: 10;
+}

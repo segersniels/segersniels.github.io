@@ -1,0 +1,16 @@
+/**
+ *	BANNER
+ *	-----------------
+ */
+
+.banner {
+	color: $c_white;
+	background-color: $c_gray_normal;
+	text-align: center; 
+	padding: 46px 0;
+	margin-bottom: 20px;
+
+	.banner__text {
+		font-size: $t_font-size_large;
+	}
+}

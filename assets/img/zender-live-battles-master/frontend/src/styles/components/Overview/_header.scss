@@ -1,0 +1,41 @@
+/**
+ *	HEADER
+ *	-----------------
+ */
+
+.header {
+	color: #FFF;
+	padding: 35px 0;
+	background-color: $c_gray_dark;
+
+	.header__title {
+		margin: 0;
+		font-weight: $t_font-weight_normal;
+	}
+
+	.header__authButton {
+		width: 100%;
+	}
+
+}
+
+.userInfo {
+	color: $c_white;
+	position: relative;
+
+	.userInfo__container {
+		position: absolute;
+		right: 0;
+	}
+
+	.userInfo__img {
+		max-height: 25px;
+		border-radius: 50%;
+		border: 2px solid #FFF;
+		margin-right: 10px;
+	}
+
+	.userInfo__name {
+		text-align: right;
+	}
+}
