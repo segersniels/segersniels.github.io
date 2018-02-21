@@ -1,3 +1,7 @@
+// Body resets
+//
+// Update the foundational and global aspects of the page.
+
 *{
     font-family: 'Roboto-Light','Open Sans', Geneva, Verdana, sans-serif !important;
     font-weight: lighter;
@@ -27,6 +31,18 @@ a{
 }
 
 .page-style{
+    position: relative;
+    height: 100%;
+    padding-top: 30px;
+    padding-left: 20%;
+    padding-right: 20%;
+    width: 100%;
+    margin: 0 auto;
+    color: #3a3a3a;
+    padding-bottom: 50px;
+}
+
+.posts{
     position: relative;
     height: 100%;
     padding-top: 30px;
@@ -69,30 +85,6 @@ p a:hover{
 
 .center{
     text-align: center;
-}
-
-.post-title{
-    margin: 0 0 8px;
-    line-height: 1.3;
-    font-size: 24px;
-    letter-spacing: -.02em;
-    font-style: normal;
-        display: block;
-    font-size: 1.17em;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    font-weight: bold;
-}
-
-.post-subtitle{
-    text-align: left;
-    font-weight: 300;
-    line-height: 1.4;
-    font-size: 18px;
-    color: rgba(0,0,0,.8);
-    margin: 0 0 12px;
 }
 
 .btn{

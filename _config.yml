@@ -1,0 +1,30 @@
+# Permalinks
+permalink:           pretty
+
+# Setup
+url:                 http://nielssegers.com
+paginate:            999
+exclude:             ['posts']
+
+# Assets
+#
+# We specify the directory for Jekyll so we can use @imports.
+sass:
+  sass_dir:          _sass
+  style:            :compressed
+
+# About/contact
+author:
+  name:              Niels Segers
+  url:               https://twitter.com/segersniels_
+  email:             segers.n@hotmail.com
+
+# Custom vars
+version:             2.0.0
+github:
+  repo:              https://github.com/segersniels
+
+# Gems
+gems:
+  - jekyll-paginate
+  - jekyll-gist

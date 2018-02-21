@@ -1,8 +1,7 @@
 header{
-    background-image: url('../img/header.jpg');
+    background-image: url('https://github.com/segersniels/segersniels.github.io/blob/master/assets/img/header.jpg?raw=true');
     background-size: cover;
     margin-bottom: 50px;
-    background-attachment: scroll;
     height: 500px;
     width: 100%;
     background-repeat: no-repeat;
@@ -51,6 +50,5 @@ header{
 }
 
 a:visited{
-  color: #3a3a3a;
+    color: #3a3a3a;
 }
-
