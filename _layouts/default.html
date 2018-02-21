@@ -3,12 +3,26 @@
 
 {% include head.html %}
 
+<header class="header">
+    <div class="container">
+        <div class="header-text">
+            <div class="navigation">
+                <a href="http://nielssegers.com">home</a>
+                <a href="work">work</a>
+                <a href="https://linkedin.com/in/nielssegers">about</a>
+            </div>
+            <h1>niels segers</h1>
+            <hr class="hr-small">
+            <span class="subheading">automator of things</span>
+        </div>
+    </div>
+</header>
+
 <body>
     <div class="container content">
         <main>
             {{ content }}
         </main>
-
     </div>
 
     {% if site.analytics_id %}

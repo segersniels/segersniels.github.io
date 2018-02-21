@@ -26,8 +26,9 @@ html {
     color: #ffffff;
 }
 
-a{
+a {
     text-decoration: underline;
+    color: rgba(0,0,0,.8);
 }
 
 .page-style{
@@ -72,15 +73,6 @@ p{
     font-size: 18px;
     color: rgba(0,0,0,.8);
     margin: 0 0 12px;
-}
-
-p a{
-    text-decoration: none;
-}
-
-p a:hover{
-    text-decoration: none;
-    color:gray;
 }
 
 .center{
