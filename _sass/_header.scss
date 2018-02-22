@@ -1,8 +1,18 @@
+@media only screen and (max-width: 500px) {
+    header {
+        height: 200px !important;
+    }
+
+    .header-text h1 {
+        font-size: 60px !important;
+    }
+}
+
 header{
     background-image: url('../public/header.jpg');
     background-size: cover;
     margin-bottom: 50px;
-    height: 500px;
+    height: 300px;
     width: 100%;
     background-repeat: no-repeat;
 }
@@ -16,13 +26,13 @@ header{
 .header-text{
     vertical-align: middle;
     text-align: center;
-    padding: 150px 0 50px;
+    padding: 5% 0 50px;
     font-size: larger;
     color: white !important;
 }
 
 .header h1{
-    font-size: 75px !important;
+    font-size: 75px;
     margin: 0 0 0 0;
     font-weight: normal;
     color: white !important;
