@@ -2,7 +2,12 @@
 //
 // Update the foundational and global aspects of the page.
 @media only screen and (max-width: 500px) {
-    .posts{
+    .posts {
+        padding-left: 10% !important;
+        padding-right: 10% !important;
+    }
+
+    .page-style {
         padding-left: 10% !important;
         padding-right: 10% !important;
     }
