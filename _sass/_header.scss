@@ -18,15 +18,16 @@ header{
 }
 
 .header{
+    display: table;
     color: white !important;
     text-align: center;
     margin: 0 auto;
 }
 
 .header-text{
-    vertical-align: middle;
     text-align: center;
-    padding: 5% 0 50px;
+    display: table-cell;
+    vertical-align: middle;
     font-size: larger;
     color: white !important;
 }
