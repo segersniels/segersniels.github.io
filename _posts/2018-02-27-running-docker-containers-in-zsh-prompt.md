@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Running docker containers in ZSH prompt
+title: View running docker containers in ZSH prompt
 ---
 
 I find it oddly amusing to see how many docker container I have running on my prompt while working.   This is how you do it.
