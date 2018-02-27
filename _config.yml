@@ -5,6 +5,7 @@ permalink:           pretty
 url:                 http://nielssegers.com
 paginate:            999
 exclude:             ['posts']
+paginate:            5
 
 # Assets
 #

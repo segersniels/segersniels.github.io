@@ -32,14 +32,24 @@
     <div class="container content">
         <main>
             <article class="post">
-  <h1 class="post-title">New job!</h1>
-  <time datetime="2017-10-30T00:00:00+01:00" class="post-date">30 Oct 2017</time>
-  <p>I came to the conclusion that my last job wasn’t really what I hoped it would be.<br />
-Even though I liked the company’s product and enjoyed my time there I had to make a decision.</p>
+  <h1 class="post-title">Running docker containers in ZSH prompt</h1>
+  <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
+  <p>I find it oddly amusing to see how many docker container I have running on my prompt while working.   This is how you do it.</p>
 
-<p>So I quit and was lucky enough to get a job at the company where I did my internship, <a href="http://www.smalltownheroes.be/">Small Town Heroes</a>, home to DevOps pioneer <a href="https://twitter.com/patrickdebois">Patrick Debois</a>! AWS, Docker, Serverless, Terraform and Node.JS here I come (again)!</p>
+<p>First you create the following function in your <code class="highlighter-rouge">.zshrc</code> file. Which basically just gets the count of containers in your <code class="highlighter-rouge">docker ps</code>.</p>
 
-<p>I’m up for the challenge!</p>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function </span>docker_prompt <span class="o">()</span> <span class="o">{</span>
+  docker ps <span class="nt">-q</span> |wc <span class="nt">-l</span> |tr <span class="nt">-d</span> <span class="s1">' '</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>Then you proceed to insert this <code class="highlighter-rouge">docker_prompt</code> function in your <code class="highlighter-rouge">PROMPT</code>. As I’m using the <code class="highlighter-rouge">oh-my-zsh</code> theme called <code class="highlighter-rouge">sorin</code> I went to edit <code class="highlighter-rouge">~/.oh-my-zsh/themes/sorin.zsh-theme</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PROMPT</span><span class="o">=</span><span class="s1">'%{$fg[red]%}containers:(%{$fg[blue]%}$(docker_prompt)%{$fg[red]%}) %{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '</span></code></pre></figure>
+
+<p>Et voila!</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">containers:<span class="o">(</span>0<span class="o">)</span> ~ ❯</code></pre></figure>
+
 
 </article>
 
@@ -47,13 +57,6 @@ Even though I liked the company’s product and enjoyed my time there I had to m
 <aside class="related">
   <h3>Related posts</h3>
   <ul class="related-posts">
-    
-      <li>
-        <a href="/2018/02/27/running-docker-containers-in-zsh-prompt/">
-          Running docker containers in ZSH prompt
-          <small><time datetime="2018-02-27T00:00:00+01:00">27 Feb 2018</time></small>
-        </a>
-      </li>
     
       <li>
         <a href="/2018/02/27/beautify-your-json-files-using-jq/">
@@ -66,6 +69,13 @@ Even though I liked the company’s product and enjoyed my time there I had to m
         <a href="/2018/02/21/npm-packages/">
           NPM Packages
           <small><time datetime="2018-02-21T00:00:00+01:00">21 Feb 2018</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/2017/11/11/slackdo/">
+          Slackdo
+          <small><time datetime="2017-11-11T00:00:00+01:00">11 Nov 2017</time></small>
         </a>
       </li>
     

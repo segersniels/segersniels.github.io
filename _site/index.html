@@ -35,6 +35,58 @@
     
     <article class="post">
         <h1 class="post-title">
+            Running docker containers in ZSH prompt
+        </h1>
+
+        <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
+
+        <p>I find it oddly amusing to see how many docker container I have running on my prompt while working.   This is how you do it.</p>
+
+<p>First you create the following function in your <code class="highlighter-rouge">.zshrc</code> file. Which basically just gets the count of containers in your <code class="highlighter-rouge">docker ps</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function </span>docker_prompt <span class="o">()</span> <span class="o">{</span>
+  docker ps <span class="nt">-q</span> |wc <span class="nt">-l</span> |tr <span class="nt">-d</span> <span class="s1">' '</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>Then you proceed to insert this <code class="highlighter-rouge">docker_prompt</code> function in your <code class="highlighter-rouge">PROMPT</code>. As I’m using the <code class="highlighter-rouge">oh-my-zsh</code> theme called <code class="highlighter-rouge">sorin</code> I went to edit <code class="highlighter-rouge">~/.oh-my-zsh/themes/sorin.zsh-theme</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PROMPT</span><span class="o">=</span><span class="s1">'%{$fg[red]%}containers:(%{$fg[blue]%}$(docker_prompt)%{$fg[red]%}) %{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '</span></code></pre></figure>
+
+<p>Et voila!</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">containers:<span class="o">(</span>0<span class="o">)</span> ~ ❯</code></pre></figure>
+
+
+    </article>
+    
+    <article class="post">
+        <h1 class="post-title">
+            Beautify your JSON files using JQ
+        </h1>
+
+        <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
+
+        <p>When working together with people on a project you are doomed to have some sort of JSON formatting issues at some point. As some people use 2 spaces at tab indentation and others use 4 space tabs things (yes I’m one of those people that uses 2 space tabs).</p>
+
+<p>Quick easy alias to beautify your JSON files, making use of JQ, to fix indentation issues.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">alias </span><span class="nv">jsonb</span><span class="o">=</span>beautify_json_file
+
+<span class="k">function </span>beautify_json_file <span class="o">()</span> <span class="o">{</span>
+  <span class="nb">cat</span> <span class="nv">$1</span> |jq <span class="s1">'.'</span> <span class="o">&gt;</span> .TEMP
+  <span class="k">if</span> <span class="o">[</span> <span class="nt">-s</span> <span class="s2">".TEMP"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">mv</span> .TEMP <span class="nv">$1</span>
+  <span class="k">else
+    </span><span class="nb">echo</span> <span class="s2">"ERR: File </span><span class="nv">$1</span><span class="s2"> contains invalid JSON"</span>
+    <span class="nb">rm</span> .TEMP
+  <span class="k">fi</span>
+<span class="o">}</span></code></pre></figure>
+
+
+    </article>
+    
+    <article class="post">
+        <h1 class="post-title">
             NPM Packages
         </h1>
 
@@ -75,47 +127,18 @@ Even though I liked the company’s product and enjoyed my time there I had to m
 
     </article>
     
-    <article class="post">
-        <h1 class="post-title">
-            First job!
-        </h1>
+</div>
 
-        <time datetime="2017-07-11T00:00:00+02:00" class="post-date">11 Jul 2017</time>
-
-        <p>I started working as a System Engineer at Cloudalize where I will be working on automating the infrastructure for their product.</p>
-
-    </article>
-    
-    <article class="post">
-        <h1 class="post-title">
-            End of internship
-        </h1>
-
-        <time datetime="2017-05-20T00:00:00+02:00" class="post-date">20 May 2017</time>
-
-        <p>My internship is coming to an end. I would like to thank Small Town Heroes for an incredible learning experience.<br />
-I learned a ton! Couple of things I worked with: AWS, Terraform, Docker, Node.js, etc.</p>
-
-    </article>
-    
-    <article class="post">
-        <h1 class="post-title">
-            Internship
-        </h1>
-
-        <time datetime="2017-01-18T00:00:00+01:00" class="post-date">18 Jan 2017</time>
-
-        <p>Exciting times ahead! I got accepted as an intern at Small Town Heroes. I will be working on the Operations team with Docker and AWS.</p>
-
-<p>I will even be doing some backend work with node.js and dynamodb. Looking forward to february!</p>
-
-    </article>
-    
+<div class="pagination">
+  
+    <a class="pagination-item older" href="/page2">Older</a>
+  
+  
+    <span class="pagination-item newer">Newer</span>
+  
 </div>
 
         </main>
     </div>
-
-    
 </body>
 </html>
