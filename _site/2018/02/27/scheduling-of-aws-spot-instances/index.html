@@ -34,14 +34,11 @@
             <article class="post">
   <h1 class="post-title">Scheduling of AWS Spot instances</h1>
   <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
-  <p>At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to save some money.
-To save even more money we decided to start using Spot Instances.</p>
+  <p>At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to remove unnecessary costs. To further decrease these costs we decided to start using Spot Instances.</p>
 
-<p>Amazon recently introduced the concept of these spot instances which let’s you bid a certain price for an EC2 instance for you to use. 
-These Spot instances are basically unused capacity they are opening up for us consumers.</p>
+<p>Amazon recently introduced the concept of these spot instances which let’s you bid a certain price for an EC2 instance for you to use. These Spot instances are basically unused capacity they are opening up for us to use.</p>
 
-<p>But as Amazon has not yet implemented a scheduling feature for these instances we decided to just write a simple Lambda function to do it for us.
-Combining AWS Cloudwatch rules with the following function gets the job done.</p>
+<p>But as Amazon has not yet implemented a scheduling feature for these instances we decided to write a simple Lambda function to do it for us. Combining AWS Cloudwatch rules with the following function gets the job done.</p>
 
 <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">AWS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'aws-sdk'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'lodash'</span><span class="p">);</span>

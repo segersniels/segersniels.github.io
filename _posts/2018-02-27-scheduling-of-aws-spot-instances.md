@@ -3,14 +3,11 @@ layout: post
 title: Scheduling of AWS Spot instances
 ---
 
-At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to save some money.
-To save even more money we decided to start using Spot Instances.
+At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to remove unnecessary costs. To further decrease these costs we decided to start using Spot Instances.
 
-Amazon recently introduced the concept of these spot instances which let's you bid a certain price for an EC2 instance for you to use. 
-These Spot instances are basically unused capacity they are opening up for us consumers.
+Amazon recently introduced the concept of these spot instances which let's you bid a certain price for an EC2 instance for you to use. These Spot instances are basically unused capacity they are opening up for us to use.
 
-But as Amazon has not yet implemented a scheduling feature for these instances we decided to just write a simple Lambda function to do it for us.
-Combining AWS Cloudwatch rules with the following function gets the job done.
+But as Amazon has not yet implemented a scheduling feature for these instances we decided to write a simple Lambda function to do it for us. Combining AWS Cloudwatch rules with the following function gets the job done.
 
 {% highlight js %}
 const AWS = require('aws-sdk');
