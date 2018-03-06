@@ -15,12 +15,12 @@ const _ = require('lodash');
 const ec2 = new AWS.EC2();
 
 exports.getTimeFromEvent = event => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         if (event.time) {
             const date = new Date(event.time);
             resolve(date.getHours());
         }
-        else console.error('No time found');
+        else console.error('No time found in event');
     });
 }
 
@@ -29,23 +29,28 @@ exports.getSpotInstanceRequest = time => {
         const params = {};
         ec2.describeSpotInstanceRequests(params, (err, data) => {
             if (err) reject(err);
-            const tags = _.uniqBy(_.flatten(_.map(data.SpotInstanceRequests, i => i.Tags)), 'Value');
-            const id = tags[0].Value;
-            resolve({ id, time });
+            const requests = _.filter(data.SpotInstanceRequests, i => i.LaunchSpecification.IamInstanceProfile.Name.split('-')[0] === 'foo' || i.LaunchSpecification.IamInstanceProfile.Name.split('-')[0] === 'bar');
+            const names = _.uniq(_.map(requests, i => i.LaunchSpecification.IamInstanceProfile.Name));
+            const tags = _.uniqBy(_.flatten(_.map(requests, i => i.Tags)), 'Value');
+            const ids = _.map(tags, i => i.Value);
+            resolve({ ids, time, names });
         });
     });
 }
 
 exports.modifySpotInstances = request => {
     return new Promise((resolve, reject) => {
-        const capacity = ((request.time === 6) ? process.env.SPOT_INSTANCE_COUNT : 0);
-        const params = {
-            SpotFleetRequestId: request.id,
-            TargetCapacity: capacity
-        };
-        ec2.modifySpotFleetRequest(params, (err, data) => {
-            if (err) reject(err);
-            resolve(data);
+        _.forEach(request.ids, (id, index) => {
+            const count = ((request.names[index].split('-')[0] === 'foo') ? process.env.FOO_SPOT_INSTANCE_COUNT : process.env.BAR_SPOT_INSTANCE_COUNT);
+            const capacity = ((request.time === 6) ? count : 0);
+            const params = {
+                SpotFleetRequestId: id,
+                TargetCapacity: capacity
+            };
+            ec2.modifySpotFleetRequest(params, (err, data) => {
+                if (err) reject(err);
+                resolve(data);
+            });
         });
     });
 }
