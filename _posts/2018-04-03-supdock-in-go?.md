@@ -7,7 +7,7 @@ There is a new kid on the block and it's called Golang. Golang has been around f
 
 As I mainly spend my days inside a terminal, I have a ton of utilities that assist me during the day. One of them is my tool [`supdock`](https://github.com/segersniels/supdock) that I use as an assisting tool that wraps around the basic docker command (`alias docker="supdock"`).
 
-I also have a running container count in my prompt. Which basically executes a docker command every time the prompt get redrawn. In combination with the alias this results in the docker command being executed through `node` which slows down the process quite a bit with it's single threaded performance. My prompt was getting noticeable slower.
+I also have a running container count in my prompt. Which basically executes a docker command every time the prompt get redrawn. In combination with the alias this results in the docker command being executed through `node` which slows down the process quite a bit with it's single threaded performance. My prompt was getting noticeably slower.
 
 So I rewrote `supdock` in Go ([`supdock-go`](https://github.com/segersniels/supdock-go)) to see how much of a difference in performance there actually is.
 
