@@ -5,7 +5,7 @@ title: Auto deploying Go binaries to Github
 
 I used to tell people to `curl` the binary of tools I wrote and store it in their `/usr/local/bin` directory. A fast and easy way, but without any automated changelog or versioning control as people always downloaded the latest version.
 
-Ofcourse this changed when I started developing them in Javascript and having everyone install through `npm`. But as I recently started developing in Go, I encountered some issues. As far as Go goes, there isn't exactly an `npm` alternative for people to quickly install binaries. And having them install directly through a curl just takes away the versioning control of a tool.
+Ofcourse this changed when I started developing mainly in Javascript and having everyone install through `npm`. But as I recently started developing in Go, I encountered some issues. As far as Go goes, there isn't exactly an `npm` alternative for people to quickly install binaries. And having them install directly through a curl just takes away the versioning control of a tool.
 
 So I started looking on the old internet and found [goreleaser](https://goreleaser.com). Goreleaser is a tool that allows you to easily build and release your Go binaries to github without a hassle. Ofcouse I needed a way to automate this and came up with the following implementation for one of my latest tools on CircleCI 2.0:
 
