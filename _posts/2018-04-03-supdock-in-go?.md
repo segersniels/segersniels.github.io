@@ -3,7 +3,7 @@ layout: post
 title: Supdock in Go?
 ---
 
-There is a new kid on the block and it's called Golang. Golang has been around for quite a while but has recently risen in popularity again. Mainly because more and more people seem to realise that the single threaded `node.js` performance is underwhelming for high performance tools and applications.
+There is a new kid on the block and it's called Golang. Golang has been around for quite a while but has recently risen in popularity again. Mainly because more and more people seem to realise that the generaly used `node.js` performance is getting underwhelming when for high performance operational tools and applications.
 
 As I mainly spend my days inside a terminal, I have a ton of utilities that assist me during the day. One of them is my tool [`supdock`](https://github.com/segersniels/supdock) that I use as an assisting tool that wraps around the basic docker command (`alias docker="supdock"`).
 
