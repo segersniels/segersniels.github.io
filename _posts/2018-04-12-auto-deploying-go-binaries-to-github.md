@@ -3,7 +3,7 @@ layout: post
 title: Auto deploying Go binaries to Github
 ---
 
-I used to tell people to `curl` the binary of tools I wrote and store it in their /usr/local/bin directory directly from a `bin` directory on Github for most of my tools. 
+I used to tell people to `curl` the binary of tools I wrote and store it in their `/usr/local/bin` directory. A fast and easy way, but without any automated changelog or versioning control as people always downloaded the latest version.
 
 Ofcourse this changed when I started developing them in Javascript and having everyone install through `npm`. But as I recently started developing in Go, I encountered some issues. As far as Go goes, there isn't exactly an `npm` alternative for people to quickly install binaries. And having them install directly through a curl just takes away the versioning control of a tool.
 
