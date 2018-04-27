@@ -3,6 +3,8 @@ layout: post
 title: Scheduling of AWS Spot instances
 ---
 
+Outdated...
+
 At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to remove unnecessary costs. To further decrease these costs we decided to start using Spot Instances.
 
 Amazon recently introduced the concept of these spot instances which let's you bid a certain price for an EC2 instance for you to use. These Spot instances are basically unused capacity they are opening up for us to use.
