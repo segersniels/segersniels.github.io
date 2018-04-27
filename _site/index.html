@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="alternate" type="application/atom+xml" title="" href="/atom.xml">
+</head>
+
+
+<header class="header">
+    <div class="header-text">
+        <div class="navigation">
+            <a href="http://nielssegers.com">home</a>
+            <a href="http://nielssegers.com/work">work</a>
+            <a href="https://linkedin.com/in/nielssegers">about</a>
+        </div>
+        <h1>niels segers</h1>
+        <hr class="hr-small">
+        <span class="subheading">automator of things</span>
+    </div>
+</header>
+
+<body>
+    <div class="container content">
+        <main>
+            <div class="posts">
+    
+    <article class="post">
+        <h1 class="post-title">
+            <a href="/2018/04/12/auto-deploying-go-binaries-to-github/">
+                Auto deploying Go binaries to Github
+            </a>
+        </h1>
+
+        <time datetime="2018-04-12T00:00:00+02:00" class="post-date">12 Apr 2018</time>
+
+        <p>When I write tools in Javascript it’s easy for people to download them through <code class="highlighter-rouge">npm</code>.
+But as I recently started developing in Go, I encountered some issues. As far as Go goes, there isn’t exactly an <code class="highlighter-rouge">npm</code> alternative for people to quickly install binaries. And having them install directly through a curl just takes away the versioning control of a tool.</p>
+
+<p>Until I found <a href="https://goreleaser.com">goreleaser</a>. Goreleaser is a tool that allows you to easily build and release your Go binaries to github without a hassle. Ofcouse I needed a way to automate this and came up with the following implementation for one of my latest tools on CircleCI 2.0:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#gorelease.sh</span>
+<span class="c">#!/usr/bin/env bash</span>
+<span class="nv">version</span><span class="o">=</span>v<span class="k">$(</span>./bin/promote <span class="nt">-v</span> |awk <span class="s1">'{print $3}'</span><span class="k">)</span>
+<span class="nv">message</span><span class="o">=</span><span class="k">$(</span>git log <span class="nt">--format</span><span class="o">=</span><span class="s2">"%s"</span> <span class="nt">-n</span> 1 <span class="nv">$CIRCLE_SHA1</span><span class="k">)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="sb">`</span>git tag <span class="nt">-l</span> <span class="nv">$version</span><span class="sb">`</span> <span class="o">==</span> <span class="nv">$version</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Tag </span><span class="nv">$version</span><span class="s2"> already exists"</span>
+<span class="k">else
+    </span>go get github.com/goreleaser/goreleaser
+    <span class="nb">echo</span> <span class="s2">"Tagging new version </span><span class="nv">$version</span><span class="s2">"</span>
+    git config <span class="nt">--global</span> user.email <span class="s2">"segers.n@hotmail.com"</span>
+    git config <span class="nt">--global</span> user.name <span class="s2">"Niels Segers"</span>
+    git tag <span class="nt">-a</span> <span class="s2">"</span><span class="nv">$version</span><span class="s2">"</span> <span class="nt">-m</span> <span class="s2">"</span><span class="nv">$message</span><span class="s2">"</span>
+    git push origin <span class="s2">"</span><span class="nv">$version</span><span class="s2">"</span>
+    goreleaser
+<span class="k">fi</span></code></pre></figure>
+
+<p>During the CircleCI build process I build a linux binary, using <code class="highlighter-rouge">GOOS=linux go build -o bin/promote</code>, just to test if it actually builds the tool. Later on in the CI build I run the release script that you see above. I check if the output of <code class="highlighter-rouge">promote -v</code> has changed in comparison with my Github tags. So untill I actually manually change the version of my tool no new releases will be made. So the only thing I have to do now, whenever I want to create new release, is change the version number from eg. <code class="highlighter-rouge">0.1.1</code> to <code class="highlighter-rouge">0.1.2</code> and CircleCI will automatically create the tag on Github for me and push a release using Goreleaser. This requires you to set a <code class="highlighter-rouge">GITHUB_TOKEN</code> environment variable.</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="c1">#.goreleaser.yml</span>
+<span class="na">builds</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">binary</span><span class="pi">:</span> <span class="s">promote</span>
+    <span class="na">goos</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">darwin</span>
+      <span class="pi">-</span> <span class="s">linux</span>
+    <span class="na">goarch</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">amd64</span>  
+<span class="na">archive</span><span class="pi">:</span>
+  <span class="na">format</span><span class="pi">:</span> <span class="s">binary</span></code></pre></figure>
+
+
+    </article>
+    
+    <article class="post">
+        <h1 class="post-title">
+            <a href="/2018/04/03/supdock-in-go/">
+                Supdock in Go?
+            </a>
+        </h1>
+
+        <time datetime="2018-04-03T00:00:00+02:00" class="post-date">03 Apr 2018</time>
+
+        <p>There is a new kid on the block and it’s called Golang. Golang has been around for quite a while but has recently risen in popularity again. Mainly because more and more people seem to realise that the generaly used <code class="highlighter-rouge">node.js</code> performance is getting underwhelming when for high performance operational tools and applications.</p>
+
+<p>As I mainly spend my days inside a terminal, I have a ton of utilities that assist me during the day. One of them is my tool <a href="https://github.com/segersniels/supdock"><code class="highlighter-rouge">supdock</code></a> that I use as an assisting tool that wraps around the basic docker command (<code class="highlighter-rouge">alias docker="supdock"</code>).</p>
+
+<p>I also have a running container count in my prompt. Which basically executes a docker command every time the prompt get redrawn. In combination with the alias this results in the docker command being executed through <code class="highlighter-rouge">node</code> which slows down the process quite a bit. My prompt was getting noticeably slower since Node is not really known for it’s top notch performance.</p>
+
+<p>So I rewrote <code class="highlighter-rouge">supdock</code> in Go (<a href="https://github.com/segersniels/supdock-go"><code class="highlighter-rouge">supdock-go</code></a>) to see how much of a difference in performance there actually is.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">supdock ps  0.33s user 0.07s system 103% cpu 0.390 total
+supdock-go ps  0.06s user 0.02s system 91% cpu 0.091 total</code></pre></figure>
+
+<p>We can clearly see that Go is the winner over Node here. I guess I’ll have to keep this in mind whenever I see the need to write a new tool.</p>
+
+    </article>
+    
+    <article class="post">
+        <h1 class="post-title">
+            <a href="/2018/02/27/scheduling-of-aws-spot-instances/">
+                Scheduling of AWS Spot instances
+            </a>
+        </h1>
+
+        <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
+
+        <p>Outdated…</p>
+
+<p>At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to remove unnecessary costs. To further decrease these costs we decided to start using Spot Instances.</p>
+
+<p>Amazon recently introduced the concept of these spot instances which let’s you bid a certain price for an EC2 instance for you to use. These Spot instances are basically unused capacity they are opening up for us to use.</p>
+
+<p>But as Amazon has not yet implemented a scheduling feature for these instances we decided to write a simple Lambda function to do it for us. Combining AWS Cloudwatch rules with the following function gets the job done.</p>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">AWS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'aws-sdk'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">_</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'lodash'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">ec2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AWS</span><span class="p">.</span><span class="nx">EC2</span><span class="p">();</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getTimeFromEvent</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span><span class="err"> </span><span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">const</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">time</span><span class="p">);</span>
+            <span class="nx">resolve</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getHours</span><span class="p">());</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'No time found in event'</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">getSpotInstanceRequest</span> <span class="o">=</span> <span class="nx">time</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{};</span>
+        <span class="nx">ec2</span><span class="p">.</span><span class="nx">describeSpotInstanceRequests</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">requests</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">SpotInstanceRequests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">LaunchSpecification</span><span class="p">.</span><span class="nx">IamInstanceProfile</span><span class="p">.</span><span class="nx">Name</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'-'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'foo'</span> <span class="o">||</span><span class="err"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">LaunchSpecification</span><span class="p">.</span><span class="nx">IamInstanceProfile</span><span class="p">.</span><span class="nx">Name</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'-'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'bar'</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">names</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">LaunchSpecification</span><span class="p">.</span><span class="nx">IamInstanceProfile</span><span class="p">.</span><span class="nx">Name</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">flatten</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">Tags</span><span class="p">));</span>
+            <span class="kd">const</span> <span class="nx">ids</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">tags</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">Value</span><span class="p">);</span>
+            <span class="nx">resolve</span><span class="p">({</span> <span class="nx">ids</span><span class="p">,</span> <span class="nx">time</span><span class="p">,</span> <span class="nx">names</span> <span class="p">});</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">modifySpotInstances</span> <span class="o">=</span> <span class="nx">request</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">check</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">_</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">ids</span><span class="p">,</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">check</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="p">((</span><span class="nx">request</span><span class="p">.</span><span class="nx">names</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">'-'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'foo'</span><span class="p">)</span> <span class="p">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">FOO_SPOT_INSTANCE_COUNT</span> <span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">BAR_SPOT_INSTANCE_COUNT</span><span class="p">);</span>
+                <span class="kd">const</span> <span class="nx">capacity</span> <span class="o">=</span> <span class="p">((</span><span class="nx">request</span><span class="p">.</span><span class="nx">time</span> <span class="o">===</span> <span class="mi">6</span><span class="p">)</span> <span class="p">?</span> <span class="nx">count</span> <span class="p">:</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="na">SpotFleetRequestId</span><span class="p">:</span> <span class="nx">id</span><span class="p">,</span>
+                    <span class="na">TargetCapacity</span><span class="p">:</span> <span class="nx">capacity</span>
+                <span class="p">};</span>
+                <span class="nx">ec2</span><span class="p">.</span><span class="nx">modifySpotFleetRequest</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+                    <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="nx">check</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">exports</span><span class="p">.</span><span class="nx">handle</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">instance</span><span class="p">.</span><span class="nx">getTimeFromEvent</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">getSpotInstanceRequest</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">modifySpotInstances</span><span class="p">)</span>
+    <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">err</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">});</span>
+<span class="p">}</span></code></pre></figure>
+
+
+    </article>
+    
+    <article class="post">
+        <h1 class="post-title">
+            <a href="/2018/02/27/running-docker-containers-in-zsh-prompt/">
+                View running docker containers in ZSH prompt
+            </a>
+        </h1>
+
+        <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
+
+        <p>I find it oddly amusing to see how many docker container I have running on my prompt while working.</p>
+
+<p>First you’ll have to create the following function in your <code class="highlighter-rouge">.zshrc</code> file. Which basically just gets the count of containers in your <code class="highlighter-rouge">docker ps</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function </span>docker_prompt <span class="o">()</span> <span class="o">{</span>
+  docker ps <span class="nt">-q</span> |wc <span class="nt">-l</span> |tr <span class="nt">-d</span> <span class="s1">' '</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>Then you proceed to insert this <code class="highlighter-rouge">docker_prompt</code> function in your <code class="highlighter-rouge">PROMPT</code>. As I’m using the <code class="highlighter-rouge">oh-my-zsh</code> theme called <em>sorin</em> I went to edit <code class="highlighter-rouge">~/.oh-my-zsh/themes/sorin.zsh-theme</code>.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">PROMPT</span><span class="o">=</span><span class="s1">'%{$fg[red]%}containers:(%{$fg[blue]%}$(docker_prompt)%{$fg[red]%}) %{$fg[cyan]%}%c$(git_prompt_info) %(!.%{$fg_bold[red]%}#.%{$fg_bold[green]%}❯)%{$reset_color%} '</span></code></pre></figure>
+
+<p>Et voila, your prompt now shows your running container count!</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">containers:<span class="o">(</span>0<span class="o">)</span> ~ ❯</code></pre></figure>
+
+
+    </article>
+    
+    <article class="post">
+        <h1 class="post-title">
+            <a href="/2018/02/27/beautify-your-json-files-using-jq/">
+                Beautify your JSON files using JQ
+            </a>
+        </h1>
+
+        <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
+
+        <p>When working together with people on a project you are doomed to have some sort of JSON formatting issues at some point. As some people use 2 spaces at tab indentation and others use 4 space tabs things (yes I’m one of those people that uses 2 space tabs).</p>
+
+<p>Quick easy alias to beautify your JSON files, making use of JQ, to fix indentation issues.</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nb">alias </span><span class="nv">jsonb</span><span class="o">=</span>beautify_json_file
+
+<span class="k">function </span>beautify_json_file <span class="o">()</span> <span class="o">{</span>
+  <span class="nb">cat</span> <span class="nv">$1</span> |jq <span class="s1">'.'</span> <span class="o">&gt;</span> .TEMP
+  <span class="k">if</span> <span class="o">[</span> <span class="nt">-s</span> <span class="s2">".TEMP"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">mv</span> .TEMP <span class="nv">$1</span>
+  <span class="k">else
+    </span><span class="nb">echo</span> <span class="s2">"ERR: File </span><span class="nv">$1</span><span class="s2"> contains invalid JSON"</span>
+    <span class="nb">rm</span> .TEMP
+  <span class="k">fi</span>
+<span class="o">}</span></code></pre></figure>
+
+
+    </article>
+    
+</div>
+
+<div class="pagination">
+    
+    <a class="pagination-item older" href="/page2">Older</a>
+    
+    
+    <span class="pagination-item newer">Newer</span>
+    
+</div>
+
+        </main>
+    </div>
+</body>
+</html>
