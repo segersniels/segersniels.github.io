@@ -26,6 +26,6 @@ github:
   repo:              https://github.com/segersniels
 
 # Gems
-gems:
+plugins:
   - jekyll-paginate
   - jekyll-gist

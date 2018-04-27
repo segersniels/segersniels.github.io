@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+  <link rel="alternate" type="application/atom+xml" title="" href="/atom.xml">
+</head>
+
+
+<header class="header">
+    <div class="header-text">
+        <div class="navigation">
+            <a href="http://nielssegers.com">home</a>
+            <a href="http://nielssegers.com/work">work</a>
+            <a href="https://linkedin.com/in/nielssegers">about</a>
+        </div>
+        <h1>niels segers</h1>
+        <hr class="hr-small">
+        <span class="subheading">automator of things</span>
+    </div>
+</header>
+
+<body>
+    <div class="container content">
+        <main>
+            <article class="post">
+  <h1 class="post-title">Auto deploying Go binaries to Github</h1>
+  <time datetime="2018-04-12T00:00:00+02:00" class="post-date">12 Apr 2018</time>
+  <p>When I write tools in Javascript it’s easy for people to download them through <code class="highlighter-rouge">npm</code>.
+But as I recently started developing in Go, I encountered some issues. As far as Go goes, there isn’t exactly an <code class="highlighter-rouge">npm</code> alternative for people to quickly install binaries. And having them install directly through a curl just takes away the versioning control of a tool.</p>
+
+<p>Until I found <a href="https://goreleaser.com">goreleaser</a>. Goreleaser is a tool that allows you to easily build and release your Go binaries to github without a hassle. Ofcouse I needed a way to automate this and came up with the following implementation for one of my latest tools on CircleCI 2.0:</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#gorelease.sh</span>
+<span class="c">#!/usr/bin/env bash</span>
+<span class="nv">version</span><span class="o">=</span>v<span class="k">$(</span>./bin/promote <span class="nt">-v</span> |awk <span class="s1">'{print $3}'</span><span class="k">)</span>
+<span class="nv">message</span><span class="o">=</span><span class="k">$(</span>git log <span class="nt">--format</span><span class="o">=</span><span class="s2">"%s"</span> <span class="nt">-n</span> 1 <span class="nv">$CIRCLE_SHA1</span><span class="k">)</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="sb">`</span>git tag <span class="nt">-l</span> <span class="nv">$version</span><span class="sb">`</span> <span class="o">==</span> <span class="nv">$version</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s2">"Tag </span><span class="nv">$version</span><span class="s2"> already exists"</span>
+<span class="k">else
+    </span>go get github.com/goreleaser/goreleaser
+    <span class="nb">echo</span> <span class="s2">"Tagging new version </span><span class="nv">$version</span><span class="s2">"</span>
+    git config <span class="nt">--global</span> user.email <span class="s2">"segers.n@hotmail.com"</span>
+    git config <span class="nt">--global</span> user.name <span class="s2">"Niels Segers"</span>
+    git tag <span class="nt">-a</span> <span class="s2">"</span><span class="nv">$version</span><span class="s2">"</span> <span class="nt">-m</span> <span class="s2">"</span><span class="nv">$message</span><span class="s2">"</span>
+    git push origin <span class="s2">"</span><span class="nv">$version</span><span class="s2">"</span>
+    goreleaser
+<span class="k">fi</span></code></pre></figure>
+
+<p>During the CircleCI build process I build a linux binary, using <code class="highlighter-rouge">GOOS=linux go build -o bin/promote</code>, just to test if it actually builds the tool. Later on in the CI build I run the release script that you see above. I check if the output of <code class="highlighter-rouge">promote -v</code> has changed in comparison with my Github tags. So untill I actually manually change the version of my tool no new releases will be made. So the only thing I have to do now, whenever I want to create new release, is change the version number from eg. <code class="highlighter-rouge">0.1.1</code> to <code class="highlighter-rouge">0.1.2</code> and CircleCI will automatically create the tag on Github for me and push a release using Goreleaser. This requires you to set a <code class="highlighter-rouge">GITHUB_TOKEN</code> environment variable.</p>
+
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="c1">#.goreleaser.yml</span>
+<span class="na">builds</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">binary</span><span class="pi">:</span> <span class="s">promote</span>
+    <span class="na">goos</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">darwin</span>
+      <span class="pi">-</span> <span class="s">linux</span>
+    <span class="na">goarch</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">amd64</span>  
+<span class="na">archive</span><span class="pi">:</span>
+  <span class="na">format</span><span class="pi">:</span> <span class="s">binary</span></code></pre></figure>
+
+
+</article>
+
+
+<aside class="related">
+  <h3>Related posts</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <a href="/2018/04/03/supdock-in-go/">
+          Supdock in Go?
+          <small><time datetime="2018-04-03T00:00:00+02:00">03 Apr 2018</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/2018/02/27/scheduling-of-aws-spot-instances/">
+          Scheduling of AWS Spot instances
+          <small><time datetime="2018-02-27T00:00:00+01:00">27 Feb 2018</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/2018/02/27/running-docker-containers-in-zsh-prompt/">
+          View running docker containers in ZSH prompt
+          <small><time datetime="2018-02-27T00:00:00+01:00">27 Feb 2018</time></small>
+        </a>
+      </li>
+    
+  </ul>
+</aside>
+
+
+        </main>
+    </div>
+</body>
+</html>

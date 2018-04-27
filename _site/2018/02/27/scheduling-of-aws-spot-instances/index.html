@@ -34,7 +34,9 @@
             <article class="post">
   <h1 class="post-title">Scheduling of AWS Spot instances</h1>
   <time datetime="2018-02-27T00:00:00+01:00" class="post-date">27 Feb 2018</time>
-  <p>At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to remove unnecessary costs. To further decrease these costs we decided to start using Spot Instances.</p>
+  <p>Outdated…</p>
+
+<p>At Small Town Heroes we recently started scheduling our Auto Scaling Groups on our staging environment to remove unnecessary costs. To further decrease these costs we decided to start using Spot Instances.</p>
 
 <p>Amazon recently introduced the concept of these spot instances which let’s you bid a certain price for an EC2 instance for you to use. These Spot instances are basically unused capacity they are opening up for us to use.</p>
 
@@ -45,12 +47,12 @@
 <span class="kd">const</span> <span class="nx">ec2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AWS</span><span class="p">.</span><span class="nx">EC2</span><span class="p">();</span>
 
 <span class="nx">exports</span><span class="p">.</span><span class="nx">getTimeFromEvent</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span><span class="err"> </span><span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">time</span><span class="p">)</span> <span class="p">{</span>
             <span class="kd">const</span> <span class="nx">date</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">time</span><span class="p">);</span>
             <span class="nx">resolve</span><span class="p">(</span><span class="nx">date</span><span class="p">.</span><span class="nx">getHours</span><span class="p">());</span>
         <span class="p">}</span>
-        <span class="k">else</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'No time found'</span><span class="p">);</span>
+        <span class="k">else</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'No time found in event'</span><span class="p">);</span>
     <span class="p">});</span>
 <span class="p">}</span>
 
@@ -59,23 +61,32 @@
         <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{};</span>
         <span class="nx">ec2</span><span class="p">.</span><span class="nx">describeSpotInstanceRequests</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="kd">const</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">uniqBy</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">flatten</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">SpotInstanceRequests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">Tags</span><span class="p">)),</span> <span class="s1">'Value'</span><span class="p">);</span>
-            <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">tags</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">Value</span><span class="p">;</span>
-            <span class="nx">resolve</span><span class="p">({</span> <span class="nx">id</span><span class="p">,</span> <span class="nx">time</span> <span class="p">});</span>
+            <span class="kd">const</span> <span class="nx">requests</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">SpotInstanceRequests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">LaunchSpecification</span><span class="p">.</span><span class="nx">IamInstanceProfile</span><span class="p">.</span><span class="nx">Name</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'-'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'foo'</span> <span class="o">||</span><span class="err"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">LaunchSpecification</span><span class="p">.</span><span class="nx">IamInstanceProfile</span><span class="p">.</span><span class="nx">Name</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">'-'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'bar'</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">names</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">LaunchSpecification</span><span class="p">.</span><span class="nx">IamInstanceProfile</span><span class="p">.</span><span class="nx">Name</span><span class="p">);</span>
+            <span class="kd">const</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">flatten</span><span class="p">(</span><span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">requests</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">Tags</span><span class="p">));</span>
+            <span class="kd">const</span> <span class="nx">ids</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">tags</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=&gt;</span> <span class="nx">i</span><span class="p">.</span><span class="nx">Value</span><span class="p">);</span>
+            <span class="nx">resolve</span><span class="p">({</span> <span class="nx">ids</span><span class="p">,</span> <span class="nx">time</span><span class="p">,</span> <span class="nx">names</span> <span class="p">});</span>
         <span class="p">});</span>
     <span class="p">});</span>
 <span class="p">}</span>
 
 <span class="nx">exports</span><span class="p">.</span><span class="nx">modifySpotInstances</span> <span class="o">=</span> <span class="nx">request</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="k">new</span> <span class="nb">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">const</span> <span class="nx">capacity</span> <span class="o">=</span> <span class="p">((</span><span class="nx">request</span><span class="p">.</span><span class="nx">time</span> <span class="o">===</span> <span class="mi">6</span><span class="p">)</span> <span class="p">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">SPOT_INSTANCE_COUNT</span> <span class="p">:</span> <span class="mi">0</span><span class="p">);</span>
-        <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="na">SpotFleetRequestId</span><span class="p">:</span> <span class="nx">request</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
-            <span class="na">TargetCapacity</span><span class="p">:</span> <span class="nx">capacity</span>
-        <span class="p">};</span>
-        <span class="nx">ec2</span><span class="p">.</span><span class="nx">modifySpotFleetRequest</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
-            <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="kd">let</span> <span class="nx">check</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="nx">_</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">ids</span><span class="p">,</span> <span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">check</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="p">((</span><span class="nx">request</span><span class="p">.</span><span class="nx">names</span><span class="p">[</span><span class="nx">index</span><span class="p">].</span><span class="nx">split</span><span class="p">(</span><span class="s1">'-'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">===</span> <span class="s1">'foo'</span><span class="p">)</span> <span class="p">?</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">FOO_SPOT_INSTANCE_COUNT</span> <span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">BAR_SPOT_INSTANCE_COUNT</span><span class="p">);</span>
+                <span class="kd">const</span> <span class="nx">capacity</span> <span class="o">=</span> <span class="p">((</span><span class="nx">request</span><span class="p">.</span><span class="nx">time</span> <span class="o">===</span> <span class="mi">6</span><span class="p">)</span> <span class="p">?</span> <span class="nx">count</span> <span class="p">:</span> <span class="mi">0</span><span class="p">);</span>
+                <span class="kd">const</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="na">SpotFleetRequestId</span><span class="p">:</span> <span class="nx">id</span><span class="p">,</span>
+                    <span class="na">TargetCapacity</span><span class="p">:</span> <span class="nx">capacity</span>
+                <span class="p">};</span>
+                <span class="nx">ec2</span><span class="p">.</span><span class="nx">modifySpotFleetRequest</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="nx">reject</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+                    <span class="nx">resolve</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="nx">check</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+            <span class="p">}</span>
         <span class="p">});</span>
     <span class="p">});</span>
 <span class="p">}</span></code></pre></figure>
@@ -98,23 +109,23 @@
   <ul class="related-posts">
     
       <li>
+        <a href="/2018/04/12/auto-deploying-go-binaries-to-github/">
+          Auto deploying Go binaries to Github
+          <small><time datetime="2018-04-12T00:00:00+02:00">12 Apr 2018</time></small>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/2018/04/03/supdock-in-go/">
+          Supdock in Go?
+          <small><time datetime="2018-04-03T00:00:00+02:00">03 Apr 2018</time></small>
+        </a>
+      </li>
+    
+      <li>
         <a href="/2018/02/27/running-docker-containers-in-zsh-prompt/">
           View running docker containers in ZSH prompt
           <small><time datetime="2018-02-27T00:00:00+01:00">27 Feb 2018</time></small>
-        </a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/27/beautify-your-json-files-using-jq/">
-          Beautify your JSON files using JQ
-          <small><time datetime="2018-02-27T00:00:00+01:00">27 Feb 2018</time></small>
-        </a>
-      </li>
-    
-      <li>
-        <a href="/2018/02/21/npm-packages/">
-          NPM Packages
-          <small><time datetime="2018-02-21T00:00:00+01:00">21 Feb 2018</time></small>
         </a>
       </li>
     
