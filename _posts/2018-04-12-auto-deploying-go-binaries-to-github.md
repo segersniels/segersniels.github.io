@@ -36,8 +36,7 @@ builds:
       - darwin
       - linux
     goarch:
-      - amd64
-  
+      - amd64  
 archive:
   format: binary
 {% endhighlight %}
