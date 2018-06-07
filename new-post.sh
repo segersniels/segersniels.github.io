@@ -4,7 +4,7 @@ TIME=$(date +'%Y-%m-%d')
 
 # User input
 echo "Title?"
-read title
+read -e title
 
 filename=$(echo $title |tr '[:upper:]' '[:lower:]' |tr '\ ' '-')
 FILE="_posts/$TIME-$filename.md"
