@@ -28,6 +28,9 @@ WORKDIR /app
 
 ARG NPM_TOKEN
 
+COPY .npmrc .npmrc
+COPY package.json package.json
+
 RUN apk add --no-cache ... && \
   npm install && \
   rm .npmrc
