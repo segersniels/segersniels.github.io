@@ -50,4 +50,4 @@ ENTRYPOINT ["/bin/entrypoint.sh"]
 
 We simply execute an npm install in the first stage and copy the node_modules from the first stage into the final stage. Next up is to get the environment variable `NPM_TOKEN` exposed in our docker build. This can easily be done by doing `docker build --build-arg NPM_TOKEN -f Dockerfile -t foo .`. For even more security measures you can throw in a `--squash` to your docker build command to remove any lingering files that were deleted in the history of your docker layers.
 
-Now we have a clean git repository with no lingering credentials and a docker image with no trace of the credentials in the history. A nice little change that quite frankly improves security quite a bit.
+Now we have a clean git repository with no lingering credentials and a docker image with no trace of the credentials in the history. A nice little change that quite frankly improves security quite a bit. Now throw that `NPM_TOKEN` on your CI environment and you are set to go.
