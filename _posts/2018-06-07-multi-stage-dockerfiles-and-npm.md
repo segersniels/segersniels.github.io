@@ -39,8 +39,8 @@ FROM node:8-alpine
 
 WORKDIR /app
 
+COPY . .
 COPY --from=intermediate /app/node_modules node_modules
-COPY package.json package.json
 COPY docker/entrypoint.sh /bin/entrypoint.sh
 
 RUN chmod +x /bin/entrypoint.sh
@@ -49,3 +49,5 @@ ENTRYPOINT ["/bin/entrypoint.sh"]
 {% endhighlight %}
 
 We simply execute an npm install in the first stage and copy the node_modules from the first stage into the final stage. Next up is to get the environment variable `NPM_TOKEN` exposed in our docker build. This can easily be done by doing `docker build --build-arg NPM_TOKEN -f Dockerfile -t foo .`. For even more security measures you can throw in a `--squash` to your docker build command to remove any lingering files that were deleted in the history of your docker layers.
+
+Now we have a clean git repository with no lingering credentials and a docker image with no trace of the credentials in the history. A nice little change that quite frankly improves security quite a bit.
