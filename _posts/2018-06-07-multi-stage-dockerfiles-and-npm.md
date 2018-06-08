@@ -4,7 +4,7 @@ title: Multi-stage Dockerfiles and NPM
 ---
 As GDPR drew near we took a look at how we could improve our general security. One of those security enhancements was converting from an old legacy Sinopia to a new Verdaccio registry.
 
-Our old system had an authentication token directly in a local `.npmrc` stored in each project, eventhough being in a private repository and being locked away in ECR it wasn't exactly the most secure way to handle the situation. The `.npmrc` was still lingering in the history of the docker layers if somehow an image was compromised by someone, exposing our entire private NPM registry. Not even that, just simply having access to our private github repository in some way gave the possibility to just go read the `.npmrc` file directly from there.
+Our old system had an authentication token directly in a local `.npmrc` stored in each project, eventhough being in a private repository and being locked away in ECR it wasn't exactly the most secure way to handle the situation. The `.npmrc` was still lingering in the history of the docker layers if somehow an image was compromised by someone, exposing our entire private NPM registry. And even the thought of having credentials lingering around a git repository is scary.
 
 This is how we handled it. 
 
